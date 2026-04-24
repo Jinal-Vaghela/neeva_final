@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile | Neeva Ayurveda</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=Noto+Sans+Devanagari:wght@400;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .profile-page { padding-top: 120px; min-height: 80vh; background: var(--bg-mid); }
+    .btn-back { display: inline-flex; align-items: center; gap: 8px; color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; margin-bottom: 20px; transition: var(--transition); }
+    .btn-back:hover { color: var(--amber); transform: translateX(-5px); }
+  </style>
+</head>
+
+<body>
+
+  <!-- Floating Particles -->
+  <div class="particles" id="particles"></div>
+
+  <!-- Navigation -->
+  <nav class="navbar scrolled" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <div class="logo-wrapper">
+          <div class="logo-branch">
+            <svg viewBox="0 0 100 40" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 32 C 30 15, 70 15, 95 35" stroke="currentColor" fill="none" stroke-width="2.5" stroke-linecap="round" />
+              <path d="M25 22 Q 20 12, 32 18 T 25 22" fill="currentColor" />
+              <path d="M40 18 Q 35 8, 47 14 T 40 18" fill="currentColor" />
+              <path d="M55 16 Q 50 6, 62 12 T 55 16" fill="currentColor" />
+              <path d="M70 18 Q 65 8, 77 14 T 70 18" fill="currentColor" />
+              <path d="M85 24 Q 80 14, 92 20 T 85 24" fill="currentColor" />
+              <path d="M32 28 Q 37 38, 25 32 T 32 28" fill="currentColor" />
+              <path d="M50 26 Q 55 36, 43 30 T 50 26" fill="currentColor" />
+              <path d="M68 28 Q 73 38, 61 32 T 68 28" fill="currentColor" />
+            </svg>
+          </div>
+          <span class="logo-name">Neeva</span>
+        </div>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html#home" class="nav-link">Home</a></li>
+        <li><a href="index.html#products" class="nav-link">Products</a></li>
+        <li><a href="profile.html" class="nav-link active" style="color: var(--amber);">Profile</a></li>
+        <li><a href="orders.html" class="nav-link">Orders</a></li>
+      </ul>
+      <div class="nav-actions">
+        <div id="userProfile" class="user-status">
+          <span id="userName" class="user-name"></span>
+          <button id="logoutBtn" class="nav-btn-logout" title="Logout">Logout</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="profile-page" style="padding-top: 100px;">
+    <div class="profile-container" style="max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
+      
+      <div class="dashboard-layout" style="display: grid; grid-template-columns: 280px 1fr; gap: 40px; align-items: start;">
+        
+        <!-- Sidebar Navigation (Same as orders.html) -->
+        <aside class="dashboard-sidebar" style="background: white; border: 1px solid var(--card-border); padding: 30px; border-radius: 24px; position: sticky; top: 120px; box-shadow: 0 10px 30px rgba(0,0,0,0.03);">
+          <div class="user-brief" style="margin-bottom: 30px; text-align: center; border-bottom: 1px solid #eee; padding-bottom: 25px;">
+            <div class="avatar-circle" style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--amber-dark), var(--amber-light)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; color: white; font-size: 1.5rem; font-weight: 700;">
+              <span id="nameInitial">U</span>
+            </div>
+            <h3 id="sideUserName" style="font-size: 1.1rem; color: var(--cream); margin: 0;">User Name</h3>
+            <p id="sideUserEmail" style="font-size: 0.8rem; color: var(--text-muted); margin: 5px 0 0;">user@example.com</p>
+          </div>
+          
+          <nav class="dash-nav" style="display: flex; flex-direction: column; gap: 8px;">
+            <a href="profile.html" class="dash-link active" style="padding: 12px 20px; border-radius: 12px; text-decoration: none; color: var(--amber-light); background: rgba(16, 185, 129, 0.08); font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 12px;">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              My Profile
+            </a>
+            <a href="orders.html" class="dash-link" style="padding: 12px 20px; border-radius: 12px; text-decoration: none; color: var(--text-secondary); font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 12px; transition: 0.3s;">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+              Order History
+            </a>
+            <a href="#addressesSection" onclick="scrollToAddresses()" class="dash-link" style="padding: 12px 20px; border-radius: 12px; text-decoration: none; color: var(--text-secondary); font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 12px; transition: 0.3s;">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              Addresses
+            </a>
+            <hr style="border: none; border-top: 1px solid #eee; margin: 10px 0;">
+            <button id="logoutBtnAlt" style="padding: 12px 20px; border-radius: 12px; color: #ef4444; background: none; border: none; font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: 0.3s; text-align: left; width: 100%;">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              Logout
+            </button>
+          </nav>
+
+          <div id="adminAccess" style="display: none; margin-top: 20px;">
+            <a href="admin.html" class="btn-primary" style="display: block; background: #6366f1; text-align: center; border-radius: 12px; font-size: 0.85rem;">Admin Panel 🛡️</a>
+          </div>
+        </aside>
+
+        <!-- Main Content (Personal Info & Addresses) -->
+        <div class="dashboard-content">
+          <div class="content-header" style="margin-bottom: 40px;">
+            <h1 style="font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--cream); margin: 0;">Account Settings</h1>
+            <p style="color: var(--text-muted); margin-top: 8px;">Manage your profile and delivery preferences.</p>
+          </div>
+
+          <!-- Profile Details Section -->
+          <div class="profile-card" style="background: white; border: 1px solid var(--card-border); padding: 40px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); margin-bottom: 50px;">
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 30px; border-bottom: 1px solid #f8fafc; padding-bottom: 20px;">
+               <h2 style="font-size: 1.3rem; font-weight: 600; color: var(--text-primary); margin: 0;">Personal Information</h2>
+            </div>
+            <form id="profileForm" class="auth-form" style="gap: 25px; display: flex; flex-direction: column;">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="form-group">
+                  <label style="display: block; margin-bottom: 8px; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">Full Name</label>
+                  <input type="text" id="profName" placeholder="Full Name" style="width: 100%; border: 1px solid #e2e8f0; padding: 12px 16px; border-radius: 12px; background: #f8fafc; color: var(--text-primary); transition: 0.3s;" />
+                </div>
+                <div class="form-group">
+                  <label style="display: block; margin-bottom: 8px; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">Phone Number</label>
+                  <input type="tel" id="profPhone" placeholder="+91 00000 00000" style="width: 100%; border: 1px solid #e2e8f0; padding: 12px 16px; border-radius: 12px; background: #f8fafc; color: var(--text-primary); transition: 0.3s;" />
+                </div>
+              </div>
+              
+              <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 20px;">
+                <div class="form-group">
+                    <label style="display: block; margin-bottom: 8px; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">Flat/House No.</label>
+                    <input type="text" id="profFlat" placeholder="e.g. 402" style="width: 100%; border: 1px solid #e2e8f0; padding: 12px 16px; border-radius: 12px; background: #f8fafc; color: var(--text-primary); transition: 0.3s;" />
+                </div>
+                <div class="form-group">
+                    <label style="display: block; margin-bottom: 8px; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">Street/Area</label>
+                    <input type="text" id="profStreet" placeholder="e.g. MG Road, Near Park" style="width: 100%; border: 1px solid #e2e8f0; padding: 12px 16px; border-radius: 12px; background: #f8fafc; color: var(--text-primary); transition: 0.3s;" />
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                <div class="form-group">
+                    <label style="display: block; margin-bottom: 8px; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">City</label>
+                    <input type="text" id="profCity" placeholder="City" style="width: 100%; border: 1px solid #e2e8f0; padding: 12px 16px; border-radius: 12px; background: #f8fafc; color: var(--text-primary); transition: 0.3s;" />
+                </div>
+                <div class="form-group">
+                    <label style="display: block; margin-bottom: 8px; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">State</label>
+                    <input type="text" id="profState" placeholder="State" style="width: 100%; border: 1px solid #e2e8f0; padding: 12px 16px; border-radius: 12px; background: #f8fafc; color: var(--text-primary); transition: 0.3s;" />
+                </div>
+                <div class="form-group">
+                    <label style="display: block; margin-bottom: 8px; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">Pincode</label>
+                    <input type="text" id="profPincode" placeholder="6 digits" style="width: 100%; border: 1px solid #e2e8f0; padding: 12px 16px; border-radius: 12px; background: #f8fafc; color: var(--text-primary); transition: 0.3s;" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label style="display: block; margin-bottom: 8px; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">Email Address</label>
+                <input type="email" id="profEmail" readonly style="width: 100%; border: 1px solid #e2e8f0; padding: 12px 16px; border-radius: 12px; background: #f1f5f9; color: var(--text-muted); cursor: not-allowed;" />
+              </div>
+              
+              <button type="submit" class="btn-primary" id="profUpdateBtn" style="padding: 14px 40px; align-self: flex-start; margin-top: 10px; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);">Update Profile</button>
+            </form>
+          </div>
+
+          <!-- Saved Addresses Section -->
+          <div id="addressesSection" style="margin-top: 40px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+              <div style="display: flex; align-items: center; gap: 15px;">
+                <h2 style="font-size: 1.3rem; font-weight: 600; color: var(--text-primary); margin: 0;">Saved Addresses</h2>
+                <div class="section-tag" style="margin: 0; padding: 3px 12px; font-size: 0.65rem; background: rgba(16, 185, 129, 0.1); color: var(--amber-dark); border-color: rgba(16, 185, 129, 0.2);">Delivery</div>
+              </div>
+              <button onclick="openAddressModal()" class="btn-primary" style="padding: 10px 20px; font-size: 0.8rem; display: flex; align-items: center; gap: 8px;">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+                Add New Address
+              </button>
+            </div>
+            <div id="addressList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
+              <!-- Saved addresses will be loaded here -->
+              <div class="address-skeleton" style="height: 150px; background: #f1f5f9; border-radius: 20px; animation: pulse 1.5s infinite;"></div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-bottom" style="border: none; justify-content: center;">
+      <p>© 2024 Neeva. All Rights Reserved. Made with 🌿 in India</p>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">
+    <span class="toast-icon">✓</span>
+    <span class="toast-msg" id="toastMsg">Updated!</span>
+  </div>
+
+  <!-- Address Modal -->
+  <div id="addressOverlay" style="position:fixed; inset:0; background:rgba(0,0,0,0.5); display:none; z-index:2000; backdrop-filter:blur(10px);"></div>
+  <div id="addressModal" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); width:90%; max-width:500px; background:white; border-radius:30px; padding:40px; display:none; z-index:2001; box-shadow: 0 30px 60px rgba(0,0,0,0.1);">
+     <h2 style="margin-top:0;">Add Address</h2>
+     <form id="addressForm" style="display:flex; flex-direction:column; gap:15px;">
+        <input type="text" id="addName" placeholder="Full Name" required style="padding:12px; border:1px solid #ddd; border-radius:12px;" />
+        <input type="tel" id="addPhone" placeholder="Phone Number" required style="padding:12px; border:1px solid #ddd; border-radius:12px;" />
+        <input type="text" id="addFlat" placeholder="Flat / House No." style="padding:12px; border:1px solid #ddd; border-radius:12px;" />
+        <input type="text" id="addStreet" placeholder="Street / Area" style="padding:12px; border:1px solid #ddd; border-radius:12px;" />
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+            <input type="text" id="addCity" placeholder="City" required style="padding:12px; border:1px solid #ddd; border-radius:12px;" />
+            <input type="text" id="addState" placeholder="State" required style="padding:12px; border:1px solid #ddd; border-radius:12px;" />
+        </div>
+        <input type="text" id="addPincode" placeholder="Pincode" required style="padding:12px; border:1px solid #ddd; border-radius:12px;" />
+        <label style="display:flex; align-items:center; gap:10px; font-size:0.9rem;">
+            <input type="checkbox" id="addDefault" /> Set as default address
+        </label>
+        <div style="display:flex; gap:15px; margin-top:10px;">
+            <button type="submit" class="btn-primary" style="flex:1;">Save Address</button>
+            <button type="button" onclick="closeAddressModal()" style="padding:12px 20px; border:none; background:#f0f0f0; border-radius:12px; font-weight:600;">Cancel</button>
+        </div>
+     </form>
+  </div>
+
+  <script type="module" src="app.js"></script>
+  <script>
+    function scrollToAddresses() {
+      document.getElementById('addressesSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Custom logout for the dashboard button
+    document.getElementById('logoutBtnAlt')?.addEventListener('click', () => {
+      document.getElementById('logoutBtn').click();
+    });
+
+    // Populate summary fields when profile is fetched
+    async function initDashboard() {
+      const token = window.authToken || localStorage.getItem('neeva_token');
+      if (token) {
+        await fetchProfile();
+        loadAddresses();
+      }
+    }
+
+    // Re-fetch on load to ensure summary is populated
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(initDashboard, 500);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neeva — Ancient Wisdom for Modern Wellness</title>
+  <meta name="description"
+    content="Premium Ayurvedic products for digestive health and stomach wellness. Natural, pure and effective herbal remedies rooted in ancient Indian wisdom by Neeva." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=Noto+Sans+Devanagari:wght@400;600&display=swap"
+    rel="stylesheet" />
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- Floating Particles -->
+  <div class="particles" id="particles"></div>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <div class="logo-wrapper">
+          <div class="logo-branch">
+            <svg viewBox="0 0 100 40" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 32 C 30 15, 70 15, 95 35" stroke="currentColor" fill="none" stroke-width="2.5"
+                stroke-linecap="round" />
+              <path d="M25 22 Q 20 12, 32 18 T 25 22" fill="currentColor" />
+              <path d="M40 18 Q 35 8, 47 14 T 40 18" fill="currentColor" />
+              <path d="M55 16 Q 50 6, 62 12 T 55 16" fill="currentColor" />
+              <path d="M70 18 Q 65 8, 77 14 T 70 18" fill="currentColor" />
+              <path d="M85 24 Q 80 14, 92 20 T 85 24" fill="currentColor" />
+              <path d="M32 28 Q 37 38, 25 32 T 32 28" fill="currentColor" />
+              <path d="M50 26 Q 55 36, 43 30 T 50 26" fill="currentColor" />
+              <path d="M68 28 Q 73 38, 61 32 T 68 28" fill="currentColor" />
+            </svg>
+          </div>
+          <span class="logo-name">Neeva</span>
+        </div>
+      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home" class="nav-link active">Home</a></li>
+        <li><a href="#products" class="nav-link">Products</a></li>
+        <li><a href="profile.html" class="nav-link">Profile</a></li>
+        <li><a href="orders.html" class="nav-link">Orders</a></li>
+      </ul>
+      <div class="nav-actions">
+        <div id="userProfile" class="user-status" style="display: none;">
+          <span id="userName" class="user-name" onclick="openProfile()" style="cursor:pointer;" title="View Profile"></span>
+          <button id="logoutBtn" class="nav-btn-logout" title="Logout">Logout</button>
+        </div>
+        <button id="loginOpenBtn" class="nav-btn-secondary">Login</button>
+        <button class="nav-search" id="searchBtn" title="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+          </svg>
+        </button>
+        <button class="nav-cart" id="cartBtn" title="Cart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 01-8 0" />
+          </svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <button class="nav-hamburger" id="hamburger">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Login/Signup Modal -->
+  <div class="modal-overlay" id="authOverlay"></div>
+  <div class="auth-modal" id="authModal">
+    <div class="auth-header">
+      <h3 id="authTitle">Welcome Back</h3>
+      <button class="auth-close" id="authClose">✕</button>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabLogin">Login</button>
+      <button class="auth-tab" id="tabSignup">Sign Up</button>
+    </div>
+    <form id="authForm" class="auth-form">
+      <div id="signupFields" style="display: none;">
+        <input type="text" id="regName" placeholder="Full Name" />
+      </div>
+      <input type="email" id="authEmail" placeholder="Email Address" required />
+      <input type="password" id="authPass" placeholder="Password" required />
+      <div style="text-align: right; margin: -10px 0 15px;">
+        <a href="#" id="forgotPassLink" style="font-size: 0.75rem; color: var(--amber-light); text-decoration: none;">Forgot Password?</a>
+      </div>
+      <button type="submit" class="btn-primary" id="authSubmitBtn">Sign in</button>
+    </form>
+    
+    <div class="auth-divider"><span>OR</span></div>
+    <div id="google-login-btn">
+      <button class="google-btn-custom" onclick="handleGoogleLogin()">
+        <svg class="google-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+        </svg>
+        Continue with Google
+      </button>
+    </div>
+    
+    <div id="authMsg" class="auth-msg"></div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="hero-bg">
+      <div class="hero-orb orb-1"></div>
+      <div class="hero-orb orb-2"></div>
+      <div class="hero-orb orb-3"></div>
+      <div class="hero-orb orb-4"></div>
+      <div class="hero-orb orb-5"></div>
+      <div class="hero-orb orb-6"></div>
+      <div class="floating-leaves">
+        <div class="leaf leaf-1">🌿</div>
+        <div class="leaf leaf-2">🍃</div>
+        <div class="leaf leaf-3">🌱</div>
+        <div class="leaf leaf-4">🍃</div>
+        <div class="leaf leaf-5">🌿</div>
+      </div>
+    </div>
+
+    <div class="hero-content">
+      <!-- Left Text -->
+      <div class="hero-left">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          Ancient Ayurvedic Formula
+        </div>
+        <h1 class="hero-title" id="heroTitle">
+          Heal from<br /><span class="hero-title-accent" id="heroAccent">Gas Relief</span>
+        </h1>
+        <p class="hero-desc" id="heroDesc">
+          Shrijusukho Powder is specialized for quick gas relief and digestive comfort. Our unique herbal blend
+          addresses
+          gastric discomfort and bloating effectively.
+        </p>
+        <div class="hero-size" id="heroSize">100gm · Ayurvedic Formula</div>
+        <div class="hero-actions">
+          <button class="btn-primary" id="heroBuyBtn">Buy Now</button>
+          <button class="btn-secondary">Learn More</button>
+        </div>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-num">10K+</span>
+            <span class="stat-label">Happy Customers</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-num">100%</span>
+            <span class="stat-label">Natural</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-num">5★</span>
+            <span class="stat-label">Rating</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center 3D Product -->
+      <div class="hero-center">
+        <div class="product-stage">
+          <div class="product-glow" id="productGlow"></div>
+          <div class="product-ring ring-outer"></div>
+          <div class="product-ring ring-inner"></div>
+          <div class="product-3d" id="product3D">
+            <img src="shrijusukhol.png" alt="Shrijusukho Powder" class="product-img active" id="productImg0" />
+            <img src="mitroflush.png" alt="Mitoflush Faveger" class="product-img" id="productImg1" />
+            <img src="easylaxx.png" alt="Easylaxx Powder" class="product-img" id="productImg2" />
+          </div>
+          <!-- 3D Floating Orbs around product -->
+          <div class="orbit-orb o1"></div>
+          <div class="orbit-orb o2"></div>
+          <div class="orbit-orb o3"></div>
+          <div class="orbit-orb o4"></div>
+          <div class="orbit-orb o5"></div>
+          <div class="orbit-orb o6"></div>
+        </div>
+      </div>
+
+      <!-- Right Info -->
+      <div class="hero-right">
+        <div class="flavor-label" id="flavorLabel">Gas Relief</div>
+        <div class="product-selectors">
+          <button class="prod-sel active" id="sel0" data-index="0" title="Shrijusukho">
+            <div class="sel-dot" style="background: #3daa6a;"></div>
+          </button>
+          <button class="prod-sel" id="sel1" data-index="1" title="Mitoflush">
+            <div class="sel-dot" style="background: #2e7d4f;"></div>
+          </button>
+          <button class="prod-sel" id="sel2" data-index="2" title="Easylaxx">
+            <div class="sel-dot" style="background: #4a7c59;"></div>
+          </button>
+        </div>
+        <div class="product-price" id="heroPrice">₹750</div>
+        <button class="btn-cart-hero" id="heroCartBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+          </svg>
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="hero-progress">
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator">
+      <div class="scroll-dot"></div>
+      <span>Scroll to explore</span>
+    </div>
+  </section>
+
+  <!-- Benefits Strip -->
+  <div class="benefits-strip">
+    <div class="benefits-scroll">
+      <div class="benefit-item"><span>🌿</span> 100% Natural Herbs</div>
+      <div class="benefit-item"><span>✓</span> GMP Certified</div>
+      <div class="benefit-item"><span>🔬</span> Lab Tested</div>
+      <div class="benefit-item"><span>🚚</span> Free Delivery ₹500+</div>
+      <div class="benefit-item"><span>↩</span> 30-Day Returns</div>
+      <div class="benefit-item"><span>🌿</span> Ancient Ayurvedic Formula</div>
+      <div class="benefit-item"><span>✓</span> FSSAI Approved</div>
+      <div class="benefit-item"><span>🌿</span> 100% Natural Herbs</div>
+      <div class="benefit-item"><span>✓</span> GMP Certified</div>
+      <div class="benefit-item"><span>🔬</span> Lab Tested</div>
+      <div class="benefit-item"><span>🚚</span> Free Delivery ₹500+</div>
+      <div class="benefit-item"><span>↩</span> 30-Day Returns</div>
+    </div>
+  </div>
+
+  <!-- Products Section -->
+  <section class="products-section" id="products">
+    <div class="section-header">
+      <div class="section-tag">Our Range</div>
+      <h2 class="section-title">Premium Stomach Health <span class="text-accent">Products</span></h2>
+      <p class="section-subtitle">Carefully formulated Ayurvedic remedies for complete digestive wellness</p>
+    </div>
+
+    <div class="products-grid">
+
+      <div class="product-card">
+        <div class="card-badge">Top Rated</div>
+        <div class="card-img-wrap">
+          <img src="shrijusukho_plain.png" alt="Shrijusukho Powder" class="card-img" />
+        </div>
+        <div class="card-body">
+          <div class="card-tag">Gas Relief</div>
+          <h3 class="card-name">Shrijusukho Powder</h3>
+          <p class="card-desc">Specialized Ayurvedic formula for rapid gas relief, bloating, and digestive comfort.</p>
+          <div class="card-rating">
+            <span class="stars">★★★★★</span>
+            <span class="rating-count">(428 reviews)</span>
+          </div>
+          <div class="card-footer">
+            <div class="card-price">
+              <span class="price-current">₹750</span>
+            </div>
+            <button class="btn-add-cart" onclick="addToCart('Shrijusukho Powder', 750)">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="card-badge">Best Choice</div>
+        <div class="card-img-wrap">
+          <img src="mitoflush_plain.png" alt="Mitoflush" class="card-img" />
+        </div>
+        <div class="card-body">
+          <div class="card-tag">Constipation Relief</div>
+          <h3 class="card-name">Mitoflush</h3>
+          <p class="card-desc">Natural formula that promotes smooth motion and provides lasting constipation relief.</p>
+          <div class="card-rating">
+            <span class="stars">★★★★★</span>
+            <span class="rating-count">(312 reviews)</span>
+          </div>
+          <div class="card-footer">
+            <div class="card-price">
+              <span class="price-current">₹750</span>
+            </div>
+            <button class="btn-add-cart" onclick="addToCart('Mitoflush', 750)">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="card-badge">New Launch</div>
+        <div class="card-img-wrap">
+          <img src="easylaxx_plain.png" alt="Easylaxx" class="card-img" />
+        </div>
+        <div class="card-body">
+          <div class="card-tag">Acidity Relief</div>
+          <h3 class="card-name">Easylaxx</h3>
+          <p class="card-desc">Soothing herbal remedy for acidity and heartburn. Restores natural stomach hygiene.</p>
+          <div class="card-rating">
+            <span class="stars">★★★★★</span>
+            <span class="rating-count">(189 reviews)</span>
+          </div>
+          <div class="card-footer">
+            <div class="card-price">
+              <span class="price-current">₹750</span>
+            </div>
+            <button class="btn-add-cart" onclick="addToCart('Easylaxx', 750)">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Us Section -->
+  <section class="about-section" id="about">
+    <div class="about-container">
+      <div class="about-grid">
+        <div class="about-image">
+          <img src="about.png" alt="Neeva Ayurvedic Lab" class="reveal-img" />
+          <div class="about-experience">
+            <span class="exp-num">12+</span>
+            <span class="exp-text">Years of Research</span>
+          </div>
+        </div>
+        <div class="about-content" style="text-align: left;">
+          <div class="section-tag">Our Story</div>
+          <h2 class="section-title">Rooted in <span class="text-accent">Nature</span>, Guided by Science</h2>
+          <p class="section-subtitle" style="text-align:left; margin:0 0 24px; max-width: 100%;">At Neeva, we bridge the gap between 5,000-year-old Ayurvedic wisdom and modern clinical excellence. Our journey began with a simple belief: everyone deserves a balanced, healthy gut without compromise.</p>
+          
+          <div class="vision-points" style="display:flex; flex-direction:column; gap:24px;">
+            <div class="vision-item" style="display:flex; gap:16px;">
+              <div class="vision-icon" style="font-size:1.8rem;">🔬</div>
+              <div class="vision-info" style="text-align: left;">
+                <h4 style="margin:0; color:var(--cream); font-size:1.1rem;">Science First</h4>
+                <p style="margin:4px 0 0; color:var(--text-secondary); font-size:0.9rem; line-height:1.6;">Every formula is lab-tested for purity and potency to ensure consistent quality.</p>
+              </div>
+            </div>
+            <div class="vision-item" style="display:flex; gap:16px;">
+              <div class="vision-icon" style="font-size:1.8rem;">🌱</div>
+              <div class="vision-info" style="text-align: left;">
+                <h4 style="margin:0; color:var(--cream); font-size:1.1rem;">Ethically Sourced</h4>
+                <p style="margin:4px 0 0; color:var(--text-secondary); font-size:0.9rem; line-height:1.6;">We work directly with local farmers to harvest ingredients at their peak potency.</p>
+              </div>
+            </div>
+            <div class="vision-item" style="display:flex; gap:16px;">
+              <div class="vision-icon" style="font-size:1.8rem;">✨</div>
+              <div class="vision-info" style="text-align: left;">
+                <h4 style="margin:0; color:var(--cream); font-size:1.1rem;">Pure Transparency</h4>
+                <p style="margin:4px 0 0; color:var(--text-secondary); font-size:0.9rem; line-height:1.6;">No fillers, no artificial dyes, and zero hidden chemicals in any of our blends.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits Section -->
+  <section class="ingredient-section" id="benefits">
+    <div class="ing-container">
+      <div class="section-header">
+        <div class="section-tag">Why Choose Us</div>
+        <h2 class="section-title">The Power of <span class="text-accent">Ancient Herbs</span></h2>
+      </div>
+      <div class="ingredients-grid">
+        <div class="ing-card">
+          <div class="ing-icon">🌰</div>
+          <h3>Amla (Indian Gooseberry)</h3>
+          <p>Richest natural source of Vitamin C. Strengthens gut lining, boosts immunity and aids digestion.</p>
+        </div>
+        <div class="ing-card">
+          <div class="ing-icon">🌿</div>
+          <h3>Haritaki</h3>
+          <p>The supreme herb of Ayurveda. Removes toxins, regularizes bowel movements, and reduces inflammation.</p>
+        </div>
+        <div class="ing-card">
+          <div class="ing-icon">🍃</div>
+          <h3>Bibhitaki</h3>
+          <p>Powerful digestive tonic that reduces bloating, gas, and cleanses the digestive tract naturally.</p>
+        </div>
+        <div class="ing-card">
+          <div class="ing-icon">🌱</div>
+          <h3>Ginger (Shunthi)</h3>
+          <p>Stimulates digestive fire (Agni), reduces nausea, soothes stomach cramps and improves absorption.</p>
+        </div>
+        <div class="ing-card">
+          <div class="ing-icon">🟡</div>
+          <h3>Turmeric (Haridra)</h3>
+          <p>Curcumin-rich anti-inflammatory that heals gut wall, reduces acid reflux and fights bacteria.</p>
+        </div>
+        <div class="ing-card">
+          <div class="ing-icon">⚫</div>
+          <h3>Black Pepper (Marich)</h3>
+          <p>Enhances bioavailability of all herbs, stimulates digestive enzymes, and relieves gas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonials-section">
+    <div class="section-header">
+      <div class="section-tag">Customer Stories</div>
+      <h2 class="section-title">Real Results, <span class="text-accent">Real People</span></h2>
+    </div>
+    <div class="testimonials-container">
+      <div class="testimonials-track" id="testimonialsTrack">
+        <div class="testimonial-card">
+          <div class="t-stars">★★★★★</div>
+          <p>"After years of suffering from bloating and acidity, AyurDigest Tonic completely transformed my digestive
+            health within 3 weeks!"</p>
+          <div class="t-author">
+            <div class="t-avatar">P</div>
+            <div>
+              <div class="t-name">Priya Sharma</div>
+              <div class="t-location">Mumbai, India</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="t-stars">★★★★★</div>
+          <p>"Triphala Churna is a game changer. I feel lighter, my digestion is smooth and I have so much more energy
+            every day."</p>
+          <div class="t-author">
+            <div class="t-avatar">R</div>
+            <div>
+              <div class="t-name">Rahul Verma</div>
+              <div class="t-location">Delhi, India</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="t-stars">★★★★★</div>
+          <p>"I was skeptical at first but StomaCare Capsules gave me relief from acid reflux that no modern medicine
+            could provide."</p>
+          <div class="t-author">
+            <div class="t-avatar">A</div>
+            <div>
+              <div class="t-name">Anita Patel</div>
+              <div class="t-location">Ahmedabad, India</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="t-stars">★★★★★</div>
+          <p>"The Ashwagandha Gut Tonic helped with my IBS symptoms that were connected to stress. Highly recommend to
+            everyone!"</p>
+          <div class="t-author">
+            <div class="t-avatar">V</div>
+            <div>
+              <div class="t-name">Vikram Singh</div>
+              <div class="t-location">Bangalore, India</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="cta-bg">
+      <div class="cta-orb cta-orb-1"></div>
+      <div class="cta-orb cta-orb-2"></div>
+    </div>
+    <div class="cta-content">
+      <div class="cta-icon">🌿</div>
+      <h2>Start Your Healing Journey Today</h2>
+      <p>Join over 10,000 happy customers who transformed their digestive health with ancient Ayurvedic wisdom</p>
+      <div class="cta-actions">
+        <a href="#products" class="btn-primary">Shop All Products</a>
+        <a href="#about" class="btn-outline">Learn Our Story</a>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- Footer -->
+  <footer class="footer" id="contact">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="nav-logo">
+          <div class="logo-wrapper">
+            <div class="logo-branch">
+              <svg viewBox="0 0 100 40" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 32 C 30 15, 70 15, 95 35" stroke="currentColor" fill="none" stroke-width="2.5"
+                  stroke-linecap="round" />
+                <path d="M25 22 Q 20 12, 32 18 T 25 22" fill="currentColor" />
+                <path d="M40 18 Q 35 8, 47 14 T 40 18" fill="currentColor" />
+                <path d="M55 16 Q 50 6, 62 12 T 55 16" fill="currentColor" />
+                <path d="M70 18 Q 65 8, 77 14 T 70 18" fill="currentColor" />
+                <path d="M85 24 Q 80 14, 92 20 T 85 24" fill="currentColor" />
+                <path d="M32 28 Q 37 38, 25 32 T 32 28" fill="currentColor" />
+                <path d="M50 26 Q 55 36, 43 30 T 50 26" fill="currentColor" />
+                <path d="M68 28 Q 73 38, 61 32 T 68 28" fill="currentColor" />
+              </svg>
+            </div>
+            <span class="logo-name">Neeva</span>
+          </div>
+        </div>
+        <p>Ancient healing wisdom brought to you in its purest form. Every product crafted with love, science and
+          tradition.</p>
+        <div class="footer-socials">
+          <a href="#" class="social-link">📘</a>
+          <a href="#" class="social-link">📸</a>
+          <a href="#" class="social-link">🐦</a>
+          <a href="#" class="social-link">▶️</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#products">Products</a></li>
+          <li><a href="#benefits">Benefits</a></li>
+          <li><a href="#about">About Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="#">AyurDigest Tonic</a></li>
+          <li><a href="#">Triphala Churna</a></li>
+          <li><a href="#">StomaCare Capsules</a></li>
+          <li><a href="#">Ashwagandha Tonic</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact Us</h4>
+        <div class="contact-item">📍 123 Herb Garden, Rishikesh, Uttarakhand 249201</div>
+        <div class="contact-item">📞 +91 98765 43210</div>
+        <div class="contact-item">✉️ care@ayurvedapure.in</div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 Neeva. All Rights Reserved. Made with 🌿 in India</p>
+      <div class="footer-legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Refund Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Cart Sidebar -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <button class="cart-close" id="cartClose">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty">
+        <div class="cart-empty-icon">🛒</div>
+        <p>Your cart is empty</p>
+        <a href="#products" class="btn-primary" style="font-size:0.85rem; padding:10px 20px;">Shop Now</a>
+      </div>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none;">
+      <div class="cart-total">
+        <span>Total:</span>
+        <span class="total-amount" id="totalAmount">₹0</span>
+      </div>
+      <button id="checkoutStartBtn" class="btn-checkout">Proceed to Checkout</button>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">
+    <span class="toast-icon">✓</span>
+    <span class="toast-msg" id="toastMsg">Added to cart!</span>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div class="modal-overlay" id="checkoutOverlay"></div>
+  <div class="checkout-modal" id="checkoutModal">
+    <div class="modal-header">
+      <h3>Complete Your Order</h3>
+      <button class="modal-close" id="checkoutClose">✕</button>
+    </div>
+    
+    <!-- Step 1: Shipping -->
+    <div class="checkout-step" id="stepShipping">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div class="step-indicator" style="margin-bottom: 0;">Step 1 of 2: Shipping Details</div>
+        <button id="useProfileBtn" type="button" style="background: var(--amber-dark); border: none; color: white; padding: 6px 14px; border-radius: 8px; font-size: 0.75rem; cursor: pointer; transition: 0.3s; font-weight: 600;">Use Profile Address</button>
+      </div>
+
+      <!-- Quick Select Address -->
+      <div id="checkoutSavedAddresses" style="margin-bottom: 25px; display: none;">
+        <label style="display: block; margin-bottom: 10px; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">Quick Select Saved Address:</label>
+        <div id="checkoutAddrList" style="display: flex; gap: 12px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: thin;">
+           <!-- Saved addresses cards will show here -->
+        </div>
+      </div>
+
+      <form id="shippingForm" class="checkout-form">
+        <div class="form-row">
+          <input type="text" id="shipName" placeholder="Full Name" required />
+        </div>
+        <div class="form-row">
+          <input type="tel" id="shipPhone" placeholder="Phone Number" required />
+        </div>
+        <div class="form-row">
+          <textarea id="shipAddress" placeholder="Full Shipping Address" required></textarea>
+        </div>
+        <div class="form-row-grid">
+          <input type="text" id="shipCity" placeholder="City" required />
+          <input type="text" id="shipPincode" placeholder="Pincode" required />
+        </div>
+        <button type="submit" class="btn-primary">Continue to Payment</button>
+      </form>
+    </div>
+
+    <!-- Step 2: Payment -->
+    <div class="checkout-step" id="stepPayment" style="display: none;">
+      <div class="step-indicator">Step 2: Secure Payment</div>
+      <div style="text-align: center; padding: 20px 0;">
+        <div class="order-summary-mini">
+           <span>Total to Pay:</span>
+           <span class="total-amount-checkout" id="checkoutTotal">₹0</span>
+        </div>
+        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 25px;">Please complete your payment to finalize the order.</p>
+        <button id="payNowBtn" class="btn-primary" style="width: 100%; height: 55px; background: #111; color: white;">
+          Pay with Razorpay 💳
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 3: Success -->
+    <div class="checkout-step" id="stepSuccess" style="display: none; text-align: center; padding: 40px 20px;">
+      <div class="success-icon-wrap">
+        <div class="success-icon">✓</div>
+      </div>
+      <h3 style="color: var(--sage); margin-bottom: 8px;">Order Placed Successfully!</h3>
+      <p style="color: var(--text-secondary); margin-bottom: 24px;">Thank you for choosing Neeva. Your healing journey begins now. We've sent a confirmation to your email.</p>
+      <div class="order-id-display">Order ID: <span id="displayOrderId">#123456</span></div>
+      <button class="btn-primary" onclick="closeCheckout()">Continue Shopping</button>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

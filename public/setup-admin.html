@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neeva | Admin Setup</title>
+    <style>
+        body { font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; background: #f0fdf4; margin: 0; }
+        .card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; max-width: 400px; }
+        h1 { color: #10b981; margin-bottom: 10px; }
+        p { color: #64748b; line-height: 1.6; }
+        .btn { background: #10b981; color: white; border: none; padding: 12px 25px; border-radius: 10px; font-weight: 600; cursor: pointer; margin-top: 20px; }
+        #status { margin-top: 20px; font-weight: 600; }
+        .success { color: #059669; }
+        .error { color: #ef4444; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Admin Setup</h1>
+        <p>Click the button below to automatically create the admin account in your Firebase project.</p>
+        <button id="setupBtn" class="btn">Initialize Admin Account</button>
+        <div id="status"></div>
+    </div>
+
+    <script type="module">
+        import { auth, db } from "./firebase-config.js";
+        import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const btn = document.getElementById('setupBtn');
+        const status = document.getElementById('status');
+
+        btn.addEventListener('click', async () => {
+            btn.disabled = true;
+            btn.textContent = 'Processing...';
+            status.className = '';
+            status.textContent = 'Connecting to Firebase...';
+
+            const email = "neeva-admin@gmail.com";
+            const password = "neeva@2410";
+
+            try {
+                // 1. Try to create the user
+                let user;
+                try {
+                    const cred = await createUserWithEmailAndPassword(auth, email, password);
+                    user = cred.user;
+                    status.textContent = 'Account created! Setting permissions...';
+                } catch (err) {
+                    if (err.code === 'auth/email-already-in-use') {
+                        // If already exists, try to log in to get the UID
+                        const cred = await signInWithEmailAndPassword(auth, email, password);
+                        user = cred.user;
+                        status.textContent = 'Account already exists. Updating permissions...';
+                    } else {
+                        throw err;
+                    }
+                }
+
+                // 2. Set Admin Role in Firestore
+                await setDoc(doc(db, "users", user.uid), {
+                    name: "Neeva Admin",
+                    email: email,
+                    role: "admin",
+                    created_at: serverTimestamp()
+                }, { merge: true });
+
+                status.className = 'success';
+                status.innerHTML = '✅ Success!<br>Admin account is now active.<br><br><a href="admin.html" style="color:#10b981">Go to Dashboard</a>';
+                btn.textContent = 'Setup Complete';
+
+            } catch (err) {
+                console.error(err);
+                status.className = 'error';
+                status.textContent = '❌ Error: ' + err.message;
+                btn.disabled = false;
+                btn.textContent = 'Try Again';
+            }
+        });
+    </script>
+</body>
+</html>
