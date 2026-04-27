@@ -236,9 +236,10 @@ function removeFromCart(idx) {
 // ── Firebase Auth & User Actions ──────────────
 
 onAuthStateChanged(auth, async (user) => {
+  const isLocalAdmin = localStorage.getItem('neeva_local_admin') === 'true';
+  
   if (user) {
     currentUser = user;
-    const isLocalAdmin = localStorage.getItem('neeva_local_admin') === 'true';
     let userData;
     const userRef = doc(db, "users", user.uid);
     const userDoc = await getDoc(userRef);
@@ -255,6 +256,8 @@ onAuthStateChanged(auth, async (user) => {
         userData = userDoc.data();
     }
 
+    if (isLocalAdmin) userData.role = 'admin';
+
     if (userData) {
         updateAuthUI(userData);
         const path = window.location.pathname.toLowerCase();
@@ -267,6 +270,10 @@ onAuthStateChanged(auth, async (user) => {
         }
         updateHeaderStats();
     }
+  } else if (isLocalAdmin) {
+    // Handle Local Admin Bypass State
+    const adminData = { name: 'Neeva Admin', email: 'neeva-admin@gmail.com', role: 'admin' };
+    updateAuthUI(adminData);
   } else {
     currentUser = null;
     updateAuthUI(null);
@@ -488,7 +495,9 @@ async function initializeAppLogic() {
         
         if (email === 'neeva-admin@gmail.com' && password === 'neeva@2410') {
             localStorage.setItem('neeva_local_admin', 'true');
-            window.location.href = 'admin.html';
+            updateAuthUI({ name: 'Neeva Admin', email: email, role: 'admin' });
+            toggleAuth(false);
+            showToast('Admin Access Granted! 📊');
             return;
         }
 
@@ -519,8 +528,16 @@ async function initializeAppLogic() {
     document.getElementById('checkoutClose')?.addEventListener('click', closeCheckout);
     document.getElementById('checkoutOverlay')?.addEventListener('click', closeCheckout);
     
-    document.getElementById('logoutBtn')?.addEventListener('click', () => signOut(auth));
-    document.getElementById('logoutBtnAlt')?.addEventListener('click', () => signOut(auth));
+    document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+      localStorage.removeItem('neeva_local_admin');
+      await signOut(auth);
+      showToast('Logged out successfully');
+    });
+    document.getElementById('logoutBtnAlt')?.addEventListener('click', async () => {
+      localStorage.removeItem('neeva_local_admin');
+      await signOut(auth);
+      showToast('Logged out successfully');
+    });
 
     // Carousel Dot Listeners
     selectors.forEach((sel, i) => {
