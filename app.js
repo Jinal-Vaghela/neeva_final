@@ -413,6 +413,10 @@ window.loadUserOrders = async function() {
 function openCheckout() {
     document.getElementById('checkoutOverlay')?.classList.add('active');
     document.getElementById('checkoutModal')?.classList.add('active');
+    const useProfileBtn = document.getElementById('useProfileBtn');
+    if (useProfileBtn) {
+        useProfileBtn.style.display = currentUser ? 'block' : 'none';
+    }
     fetchProfileForCheckout();
 }
 
@@ -432,9 +436,12 @@ async function fetchProfileForCheckout() {
         const data = docSnap.data();
         if (document.getElementById('shipName')) document.getElementById('shipName').value = data.name || '';
         if (document.getElementById('shipPhone')) document.getElementById('shipPhone').value = data.phone || '';
+        if (document.getElementById('shipEmail')) document.getElementById('shipEmail').value = data.email || (currentUser?.email || '');
         if (document.getElementById('shipAddress')) document.getElementById('shipAddress').value = (data.flat || '') + ' ' + (data.street || '') + ' ' + (data.city || '');
         if (document.getElementById('shipCity')) document.getElementById('shipCity').value = data.city || '';
         if (document.getElementById('shipPincode')) document.getElementById('shipPincode').value = data.pincode || '';
+    } else if (currentUser) {
+        if (document.getElementById('shipEmail')) document.getElementById('shipEmail').value = currentUser.email || '';
     }
 }
 
@@ -505,7 +512,6 @@ async function initializeAppLogic() {
     });
 
     document.getElementById('checkoutStartBtn')?.addEventListener('click', () => {
-        if (!currentUser) { showToast('Please login to checkout'); toggleAuth(true); return; }
         if (cart.length === 0) { showToast('Cart is empty'); return; }
         openCheckout();
     });
@@ -554,13 +560,14 @@ async function initializeAppLogic() {
         e.preventDefault();
         const total = cart.reduce((a, i) => a + i.price * i.qty, 0);
         const orderData = {
-            userId: currentUser.uid,
+            userId: currentUser?.uid || 'guest',
             items: cart,
             total_amount: total,
             status: 'PENDING',
             shipping: {
                 name: document.getElementById('shipName').value,
                 phone: document.getElementById('shipPhone').value,
+                email: document.getElementById('shipEmail')?.value || (currentUser?.email || ''),
                 address: document.getElementById('shipAddress').value,
                 city: document.getElementById('shipCity').value,
                 pincode: document.getElementById('shipPincode').value
