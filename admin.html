@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nutrala Admin | Dashboard</title>
+  <title>Neeva Ayurveda Admin | Dashboard</title>
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -39,12 +39,11 @@
 
     .btn-action { padding: 8px 15px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; font-size: 0.8rem; height: auto; }
     
-    /* Order Update Modal */
     #updateOverlay { position:fixed; inset:0; background:rgba(0,0,0,0.5); display:none; z-index:2000; backdrop-filter:blur(10px); }
     #updateModal { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); width:90%; max-width:450px; background:white; border-radius:30px; padding:40px; display:none; z-index:2001; }
 
     #adminBody { display: none; }
-    .loading-screen { position: fixed; inset: 0; background: white; display: flex; align-items: center; justify-content: center; z-index: 9999; font-family: 'Outfit', sans-serif; }
+    .loading-screen { position: fixed; inset: 0; background: white; display: flex; align-items: center; justify-content: center; z-index: 9999; }
     .spinner { width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   </style>
@@ -74,33 +73,32 @@
     </aside>
 
     <main class="main-content">
-      <!-- Dashboard Section -->
       <div id="dashboardSection">
           <div class="section-header" style="text-align: left; margin-bottom: 30px;">
-          <h1 class="section-title">Admin <span class="text-accent">Overview</span></h1>
-          <p style="color: #64748b;">Manage your wellness business and track customer orders.</p>
+            <h1 class="section-title">Admin <span class="text-accent">Overview</span></h1>
+            <p style="color: #64748b;">Manage your wellness business and track customer orders.</p>
           </div>
 
           <div class="stat-grid" id="adminStats">
-          <div class="stat-card">
-              <div class="stat-label">Total Revenue</div>
-              <div class="stat-value" id="statRevenue">₹0</div>
-          </div>
-          <div class="stat-card">
-              <div class="stat-label">Total Orders</div>
-              <div class="stat-value" id="statOrders">0</div>
-          </div>
-          <div class="stat-card">
-              <div class="stat-label">Active Users</div>
-              <div class="stat-value" id="statUsers">0</div>
-          </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Revenue</div>
+                <div class="stat-value" id="statRevenue">₹0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Orders</div>
+                <div class="stat-value" id="statOrders">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Active Users</div>
+                <div class="stat-value" id="statUsers">0</div>
+            </div>
           </div>
 
           <div style="background: white; padding: 30px; border-radius: 24px; border: 1px solid #e2e8f0;">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                   <h3 style="font-size: 1.3rem; font-weight: 700;">Live <span class="text-accent">Orders</span></h3>
                   <span id="liveStatus" style="font-size: 0.75rem; color: #10b981; font-weight: 700; display: flex; align-items: center; gap: 5px;">
-                      <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; animation: pulse 2s infinite;"></span>
+                      <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981;"></span>
                       CONNECTED & LIVE
                   </span>
               </div>
@@ -115,96 +113,82 @@
                           <th>Action</th>
                       </tr>
                   </thead>
-                  <tbody id="dashLiveOrders">
-                      <!-- Live orders will appear here -->
-                  </tbody>
+                  <tbody id="dashLiveOrders"></tbody>
               </table>
           </div>
       </div>
 
-      <!-- Orders Section -->
-      <div id="ordersSection">
+      <div id="ordersSection" style="display:none;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
               <h2 style="font-size: 1.5rem; font-weight: 700;">All <span class="text-accent">Orders</span></h2>
               <button onclick="loadAdminOrders()" class="btn-action" style="background: transparent; color: var(--primary); border: 1px solid var(--primary);">Refresh List</button>
           </div>
           <table class="admin-table">
               <thead>
-              <tr>
-                  <th>Order ID</th>
-                  <th>Customer & Contact</th>
-                  <th>Delivery Address</th>
-                  <th>Status</th>
-                  <th>Amount</th>
-                  <th>Actions</th>
-              </tr>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Customer & Contact</th>
+                    <th>Delivery Address</th>
+                    <th>Status</th>
+                    <th>Amount</th>
+                    <th>Actions</th>
+                </tr>
               </thead>
-              <tbody id="adminOrderList">
-              <!-- Loaded via JS -->
-              </tbody>
+              <tbody id="adminOrderList"></tbody>
           </table>
       </div>
 
-      <!-- Users Section -->
       <div id="usersSection" style="display:none;">
           <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 20px;">Registered <span class="text-accent">Users</span></h2>
           <table class="admin-table">
               <thead>
-              <tr>
-                  <th>User ID</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Joined</th>
-              </tr>
+                <tr>
+                    <th>User ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Joined</th>
+                </tr>
               </thead>
-              <tbody id="adminUserList">
-              <!-- Loaded via JS -->
-              </tbody>
+              <tbody id="adminUserList"></tbody>
           </table>
       </div>
 
-      <!-- Payments Section -->
       <div id="paymentsSection" style="display:none;">
           <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 20px;">Payment <span class="text-accent">Transactions</span></h2>
           <table class="admin-table">
               <thead>
-              <tr>
-                  <th>Txn ID</th>
-                  <th>Order ID</th>
-                  <th>Method</th>
-                  <th>Status</th>
-                  <th>Date</th>
-              </tr>
+                <tr>
+                    <th>Txn ID</th>
+                    <th>Order ID</th>
+                    <th>Method</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
               </thead>
-              <tbody id="adminPaymentList">
-              <!-- Loaded via JS -->
-              </tbody>
+              <tbody id="adminPaymentList"></tbody>
           </table>
       </div>
     </main>
 
-    <!-- Status Update Modal -->
     <div id="updateOverlay" onclick="closeUpdateModal()"></div>
     <div id="updateModal">
       <h2 style="margin-top:0;">Update Tracking</h2>
       <form id="statusForm" style="display:flex; flex-direction:column; gap:15px;">
           <input type="hidden" id="updateOrderId" />
-          <select id="newStatus" style="padding:12px; border:1px solid #ddd; border-radius:12px; font-family: inherit;" required>
+          <select id="newStatus" style="padding:12px; border:1px solid #ddd; border-radius:12px;" required>
               <option value="PACKED">PACKED</option>
               <option value="SHIPPED">SHIPPED</option>
               <option value="IN_TRANSIT">IN_TRANSIT</option>
               <option value="OUT_FOR_DELIVERY">OUT_FOR_DELIVERY</option>
               <option value="DELIVERED">DELIVERED</option>
               <option value="CANCELLED">CANCELLED</option>
-              <option value="RETURNED">RETURNED</option>
           </select>
           <input type="text" id="statusLocation" placeholder="Current Location (e.g. Surat Hub)" required style="padding:12px; border:1px solid #ddd; border-radius:12px;" />
-          <textarea id="statusDesc" placeholder="Description (e.g. Parcel has left the warehouse)" style="padding:12px; border:1px solid #ddd; border-radius:12px; font-family:inherit; min-height:80px;"></textarea>
-          
+          <textarea id="statusDesc" placeholder="Description" style="padding:12px; border:1px solid #ddd; border-radius:12px; min-height:80px;"></textarea>
           <div style="display:flex; gap:15px; margin-top:10px;">
               <button type="submit" class="btn-primary" style="flex:1;">Update Status</button>
-              <button type="button" onclick="closeUpdateModal()" style="padding:12px 20px; border:none; background:#f0f0f0; border-radius:12px; font-weight:600;">Cancel</button>
+              <button type="button" onclick="closeUpdateModal()" style="padding:12px 20px; border:none; background:#f0f0f0; border-radius:12px;">Cancel</button>
           </div>
       </form>
     </div>
@@ -216,7 +200,6 @@
     import { collection, getDocs, doc, getDoc, updateDoc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     onAuthStateChanged(auth, async (user) => {
-        // Check for local override first
         if (localStorage.getItem('neeva_local_admin') === 'true') {
             document.getElementById('loadingScreen').style.display = 'none';
             document.getElementById('adminBody').style.display = 'block';
@@ -271,20 +254,21 @@
             document.getElementById('statOrders').textContent = ordersSnap.size;
             document.getElementById('statUsers').textContent = usersSnap.size;
             renderRecentOrders(ordersSnap.docs.slice(0, 5));
-        } catch (err) { console.error(err); }
+        } catch (err) { console.error("Stats Error:", err); }
     }
 
     function renderRecentOrders(docs) {
         const list = document.getElementById('dashLiveOrders');
+        if (!list) return;
         list.innerHTML = docs.map(d => {
             const order = d.data();
             return `
                 <tr>
                     <td style="font-weight:700; color:var(--primary);">#${d.id.slice(0,6)}</td>
-                    <td>${order.shipping?.name || 'Customer'}</td>
+                    <td>${order.shipping?.name || 'Guest'}</td>
                     <td style="font-size:0.8rem;">${order.shipping?.address || '--'}</td>
                     <td><span class="badge badge-paid">${order.status}</span></td>
-                    <td>₹${order.total_amount}</td>
+                    <td>₹${order.total_amount || 0}</td>
                     <td><button onclick="openStatusModal('${d.id}', '${order.status}')" class="btn-action" style="background:var(--primary); color:white;">Update</button></td>
                 </tr>
             `;
@@ -292,45 +276,59 @@
     }
 
     window.loadAdminOrders = async function() {
-        const list = document.getElementById('adminOrderList');
-        const snap = await getDocs(query(collection(db, "orders"), orderBy("created_at", "desc")));
-        list.innerHTML = snap.docs.map(d => {
-            const order = d.data();
-            return `
-                <tr>
-                    <td style="font-weight:700; color:var(--primary);">#${d.id.slice(0,8)}</td>
-                    <td><div>${order.shipping?.name}</div><div style="font-size:0.8rem;">${order.shipping?.phone}</div></td>
-                    <td style="font-size:0.8rem;">${order.shipping?.address}</td>
-                    <td><div class="badge badge-paid">${order.status}</div></td>
-                    <td>₹${order.total_amount}</td>
-                    <td><button onclick="openStatusModal('${d.id}', '${order.status}')" class="btn-action" style="background:var(--primary); color:white;">Update</button></td>
-                </tr>
-            `;
-        }).join('');
+        try {
+            const list = document.getElementById('adminOrderList');
+            if (!list) return;
+            const snap = await getDocs(query(collection(db, "orders"), orderBy("created_at", "desc")));
+            if (snap.empty) {
+                list.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:20px;">No orders found.</td></tr>';
+                return;
+            }
+            list.innerHTML = snap.docs.map(d => {
+                const order = d.data();
+                return `
+                    <tr>
+                        <td style="font-weight:700; color:var(--primary);">#${d.id.slice(0,8)}</td>
+                        <td><div>${order.shipping?.name || 'Guest'}</div><div style="font-size:0.8rem;">${order.shipping?.phone || '--'}</div></td>
+                        <td style="font-size:0.8rem;">${order.shipping?.address || '--'}</td>
+                        <td><div class="badge badge-paid">${order.status}</div></td>
+                        <td>₹${order.total_amount || 0}</td>
+                        <td><button onclick="openStatusModal('${d.id}', '${order.status}')" class="btn-action" style="background:var(--primary); color:white;">Update</button></td>
+                    </tr>
+                `;
+            }).join('');
+        } catch (err) { console.error("Order Load Error:", err); }
     }
 
-    async function loadAdminUsers() {
-        const list = document.getElementById('adminUserList');
-        const snap = await getDocs(collection(db, "users"));
-        list.innerHTML = snap.docs.map(d => {
-            const u = d.data();
-            const date = u.created_at?.toDate().toLocaleDateString() || 'Just now';
-            const role = u.role || 'user';
-            const roleColor = role === 'admin' ? '#ef4444' : '#64748b';
-            return `
-                <tr>
-                    <td style="font-size:0.8rem; color:#94a3b8;">#${d.id.slice(0,8)}</td>
-                    <td style="font-weight:600;">${u.name || 'Anonymous'}</td>
-                    <td>${u.email}</td>
-                    <td><span style="color:${roleColor}; font-weight:700; text-transform:uppercase; font-size:0.75rem;">${role}</span></td>
-                    <td style="font-size:0.85rem;">${date}</td>
-                </tr>
-            `;
-        }).join('');
+    window.loadAdminUsers = async function() {
+        try {
+            const list = document.getElementById('adminUserList');
+            if (!list) return;
+            const snap = await getDocs(collection(db, "users"));
+            if (snap.empty) {
+                list.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px;">No users found.</td></tr>';
+                return;
+            }
+            list.innerHTML = snap.docs.map(d => {
+                const u = d.data();
+                const date = u.created_at?.toDate().toLocaleDateString() || 'Just now';
+                const role = u.role || 'user';
+                return `
+                    <tr>
+                        <td style="font-size:0.8rem; color:#94a3b8;">#${d.id.slice(0,8)}</td>
+                        <td style="font-weight:600;">${u.name || 'Anonymous'}</td>
+                        <td>${u.email || '--'}</td>
+                        <td style="text-transform:uppercase; font-size:0.75rem; font-weight:700;">${role}</td>
+                        <td style="font-size:0.85rem;">${date}</td>
+                    </tr>
+                `;
+            }).join('');
+        } catch (err) { console.error("User Load Error:", err); }
     }
 
     async function loadAdminPayments() {
         const list = document.getElementById('adminPaymentList');
+        if (!list) return;
         const snap = await getDocs(collection(db, "orders"));
         list.innerHTML = snap.docs.map(d => `<tr><td>TXN_${d.id.slice(0,10)}</td><td>#${d.id.slice(0,8)}</td><td>Razorpay</td><td>SUCCESS</td><td>Today</td></tr>`).join('');
     }
@@ -349,15 +347,17 @@
 
     document.getElementById('statusForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        await updateDoc(doc(db, "orders", document.getElementById('updateOrderId').value), {
-            status: document.getElementById('newStatus').value,
-            current_location: document.getElementById('statusLocation').value,
-            tracking_desc: document.getElementById('statusDesc').value,
-            updated_at: serverTimestamp()
-        });
-        alert('Status Updated!');
-        closeUpdateModal();
-        loadAdminOrders();
+        try {
+            await updateDoc(doc(db, "orders", document.getElementById('updateOrderId').value), {
+                status: document.getElementById('newStatus').value,
+                current_location: document.getElementById('statusLocation').value,
+                tracking_desc: document.getElementById('statusDesc').value,
+                updated_at: serverTimestamp()
+            });
+            alert('Status Updated!');
+            closeUpdateModal();
+            loadAdminOrders();
+        } catch (err) { alert('Update failed: ' + err.message); }
     });
   </script>
 </body>
