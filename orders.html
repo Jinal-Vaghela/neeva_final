@@ -139,11 +139,11 @@
   <script>
     // Custom logout for the dashboard button
     document.getElementById('logoutBtnAlt')?.addEventListener('click', () => {
-      document.getElementById('logoutBtn').click();
+      document.getElementById('logoutBtn')?.click();
     });
 
-    // Update order counts
-    async function updateOrderStats() {
+    // Update order counts (can be called after loadUserOrders)
+    window.updateOrderStats = () => {
       const activeList = document.getElementById('activeOrdersList');
       const pastList = document.getElementById('pastOrdersList');
       if (!activeList || !pastList) return;
@@ -154,19 +154,6 @@
       if (document.getElementById('activeCount')) document.getElementById('activeCount').textContent = activeCount;
       if (document.getElementById('totalCount')) document.getElementById('totalCount').textContent = activeCount + pastCount;
     }
-
-    // Initial load
-    window.addEventListener('DOMContentLoaded', () => {
-      setTimeout(async () => {
-        const token = window.authToken || localStorage.getItem('neeva_token');
-        if (token) {
-          await fetchProfile();
-          // The loadUserOrders in app.js is called by fetchProfile
-          // We wait a bit then update stats
-          setTimeout(updateOrderStats, 1000);
-        }
-      }, 500);
-    });
   </script>
 </body>
 </html>

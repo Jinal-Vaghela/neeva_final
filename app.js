@@ -108,7 +108,9 @@ function switchToProduct(index) {
   animateTextChange(heroSize, p.size);
   animateTextChange(heroPrice, p.price);
   animateTextChange(flavorLabel, p.label);
-  productGlow.style.background = `radial-gradient(circle, ${p.glowColor} 0%, rgba(16, 185, 129, 0.02) 50%, transparent 70%)`;
+  if (productGlow) {
+    productGlow.style.background = `radial-gradient(circle, ${p.glowColor} 0%, rgba(16, 185, 129, 0.02) 50%, transparent 70%)`;
+  }
   selectors.forEach((sel, i) => sel.classList.toggle('active', i === index));
   resetProgress();
 }
@@ -258,11 +260,12 @@ onAuthStateChanged(auth, async (user) => {
     if (userData) {
         updateAuthUI(userData);
         
-        if (window.location.pathname.includes('profile.html')) {
+        const path = window.location.pathname.toLowerCase();
+        if (path.includes('profile')) {
             populateProfileFields(userData);
             loadAddresses();
         }
-        if (window.location.pathname.includes('orders.html')) {
+        if (path.includes('orders')) {
             loadUserOrders();
         }
         updateHeaderStats();
@@ -403,10 +406,12 @@ document.getElementById('forgotPassLink')?.addEventListener('click', async (e) =
 
 // ── Profile & Addresses (Firestore) ───────────
 
-async function populateProfileFields(data) {
+window.populateProfileFields = function(data) {
     if (document.getElementById('profName')) document.getElementById('profName').value = data.name || '';
     if (document.getElementById('profEmail')) document.getElementById('profEmail').value = data.email || '';
     if (document.getElementById('profPhone')) document.getElementById('profPhone').value = data.phone || '';
+    if (document.getElementById('profFlat')) document.getElementById('profFlat').value = data.flat || '';
+    if (document.getElementById('profStreet')) document.getElementById('profStreet').value = data.street || '';
     if (document.getElementById('profCity')) document.getElementById('profCity').value = data.city || '';
     if (document.getElementById('profState')) document.getElementById('profState').value = data.state || '';
     if (document.getElementById('profPincode')) document.getElementById('profPincode').value = data.pincode || '';
@@ -437,7 +442,7 @@ document.getElementById('profileForm')?.addEventListener('submit', async (e) => 
     }
 });
 
-async function loadAddresses() {
+window.loadAddresses = async function() {
     const list = document.getElementById('addressList');
     if (!list || !currentUser) return;
     
@@ -489,7 +494,7 @@ document.getElementById('addressForm')?.addEventListener('submit', async (e) => 
 
 // ── Orders (Firestore) ─────────────────────────
 
-async function loadUserOrders() {
+window.loadUserOrders = async function() {
     const activeList = document.getElementById('activeOrdersList');
     if (!activeList || !currentUser) return;
     
@@ -516,6 +521,9 @@ async function loadUserOrders() {
             </div>
         `;
     }).join('');
+    
+    // Update stats if function exists (orders.html)
+    window.updateOrderStats?.();
 }
 
 // ── Helpers & Initializers ─────────────────────
@@ -542,9 +550,11 @@ window.closeCart = () => {
 }
 
 // Initialize
-window.addEventListener('DOMContentLoaded', async () => {
+// -- Initialization Function --
+async function initializeAppLogic() {
   updateCart();
-  if (productImages.length > 0) startAutoPlay();
+  if (productImages && productImages.length > 0) startAutoPlay();
+
   
   // Modal Toggles
   document.getElementById('loginOpenBtn')?.addEventListener('click', () => toggleAuth(true));
@@ -729,7 +739,15 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   // Profile pre-fill button in checkout
   document.getElementById('useProfileBtn')?.addEventListener('click', fetchProfileForCheckout);
-});
+}
+
+// -- Execute Initialization --
+if (document.readyState === 'loading') {
+  window.addEventListener('DOMContentLoaded', initializeAppLogic);
+} else {
+  initializeAppLogic();
+}
+
 
 /**
  * ⚠️ EXPOSING FOR GOOGLE BUTTON (Legacy compat)

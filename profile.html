@@ -218,26 +218,12 @@
   <script type="module" src="app.js"></script>
   <script>
     function scrollToAddresses() {
-      document.getElementById('addressesSection').scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('addressesSection')?.scrollIntoView({ behavior: 'smooth' });
     }
 
     // Custom logout for the dashboard button
     document.getElementById('logoutBtnAlt')?.addEventListener('click', () => {
-      document.getElementById('logoutBtn').click();
-    });
-
-    // Populate summary fields when profile is fetched
-    async function initDashboard() {
-      const token = window.authToken || localStorage.getItem('neeva_token');
-      if (token) {
-        await fetchProfile();
-        loadAddresses();
-      }
-    }
-
-    // Re-fetch on load to ensure summary is populated
-    window.addEventListener('DOMContentLoaded', () => {
-      setTimeout(initDashboard, 500);
+      document.getElementById('logoutBtn')?.click();
     });
   </script>
 </body>
